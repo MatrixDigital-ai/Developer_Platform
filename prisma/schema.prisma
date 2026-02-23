@@ -1,0 +1,24 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Developer {
+  id           String   @id @default(cuid())
+  name         String
+  email        String   @unique
+  role         String   // e.g. "Frontend", "Backend", "Full Stack", "Mobile", "DevOps", "Data Science", "UI/UX"
+  bio          String
+  skills       String[] // array of skill tags
+  portfolioUrl String?
+  githubUrl    String?
+  linkedinUrl  String?
+  experience   String   // e.g. "0-1 years", "1-3 years", "3-5 years", "5+ years"
+  location     String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
