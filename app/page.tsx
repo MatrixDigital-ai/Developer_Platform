@@ -192,9 +192,9 @@ export default function HomePage() {
 
     {/* Trust Bar */}
     <section className="trust-bar">
-      <p>Trusted by engineers from</p>
+      <p>Powering talent pipelines for</p>
       <div className="trust-logos">
-        {['Google', 'Meta', 'Amazon', 'Microsoft', 'Stripe'].map(name => (
+        {['Tata Steel', 'Tinplate Company of India', 'Tata Motors', 'Tata Consultancy Services', 'Tata Communications'].map(name => (
           <span key={name} className="trust-logo">{name}</span>
         ))}
       </div>
