@@ -113,8 +113,8 @@ export default function HomePage() {
   };
 
   /* Submit */
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = async (e?: FormEvent) => {
+    if (e) e.preventDefault();
     if (isSubmitting) return;
     for (let i = 0; i < STEPS; i++) { if (!validate(i)) { setStep(i); flash('Please fill all required fields.', false); return; } }
 
@@ -311,7 +311,7 @@ export default function HomePage() {
           <div className="stepper-bar"><div className="stepper-bar-fill" style={{ width: `${(step / (STEPS - 1)) * 100}%` }} /></div>
         </div>
 
-        <form ref={formRef} className="form" onSubmit={handleSubmit} onKeyDown={guardEnter} noValidate>
+        <form ref={formRef} className="form" onSubmit={e => e.preventDefault()} onKeyDown={guardEnter} noValidate>
           {/* Step 0 – Your info */}
           <div className={`form-panel${step === 0 ? '' : step > 0 ? ' form-panel--left' : ' form-panel--right'}`}>
             <div className="form-grid">
@@ -413,7 +413,7 @@ export default function HomePage() {
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
               </button>
             ) : (
-              <button type="submit" className="btn btn-primary btn-lg" disabled={isSubmitting} style={{ width: '100%' }}>
+              <button type="button" className="btn btn-primary btn-lg" disabled={isSubmitting} style={{ width: '100%' }} onClick={() => handleSubmit()}>
                 {isSubmitting ? (<><span className="spinner" /> Submitting...</>) : (<>Submit Your Profile <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" /></svg></>)}
               </button>
             )}
