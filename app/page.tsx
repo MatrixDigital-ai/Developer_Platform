@@ -48,6 +48,91 @@ function AssessmentModal({ onClose }: { onClose: () => void }) {
   );
 }
 
+/* ─── Terminal Typing Lines ─── */
+const TERMINAL_LINES = [
+  { prefix: '>', text: ' Initializing AI & Automation Architect pipeline...', color: 'cyan' },
+  { prefix: '>', text: ' Deploying WordPress + AI Builder to production...', color: 'green' },
+  { prefix: '>', text: ' Full-Stack AI Innovator → matched to 3 projects...', color: 'purple' },
+  { prefix: '>', text: ' Aspiring AI Engineer → entering 32-Node journey...', color: 'yellow' },
+  { prefix: '$', text: ' matrix deploy --all-nodes --status=validated ✓', color: 'green' },
+];
+
+/* ─── Archetype Data ─── */
+const ARCHETYPES = [
+  {
+    icon: '⚡',
+    title: 'AI & Automation Architect',
+    desc: 'Enterprise-grade Python & Make.com workflows. You build the invisible systems that 10× operations overnight.',
+    tag: 'Bimodal Agent Syncing',
+    gradient: 'linear-gradient(135deg, #6366F1, #8B5CF6)',
+  },
+  {
+    icon: '🧩',
+    title: 'WordPress + AI Builder',
+    desc: 'AI chatbots and automated content engines on WordPress. You turn static sites into living, thinking platforms.',
+    tag: 'Portfolio Applications',
+    gradient: 'linear-gradient(135deg, #0052FF, #38BDF8)',
+  },
+  {
+    icon: '🚀',
+    title: 'Full-Stack AI Innovator',
+    desc: 'Next.js, Neon, Prisma — end to end. You architect the entire stack from database schema to deployed edge.',
+    tag: 'Developer Matrix Listing',
+    gradient: 'linear-gradient(135deg, #059669, #34D399)',
+  },
+  {
+    icon: '🔬',
+    title: 'Aspiring AI Engineer',
+    desc: 'From Pandas theory to real-world model fine-tuning. You\'re building the foundation for tomorrow\'s breakthroughs.',
+    tag: '32-Node Validation',
+    gradient: 'linear-gradient(135deg, #F59E0B, #FBBF24)',
+  },
+];
+
+/* ─── Platform Features ─── */
+const PLATFORM_FEATURES = [
+  {
+    icon: (
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="12" cy="12" r="2" /><circle cx="12" cy="5" r="1" /><circle cx="19" cy="12" r="1" /><circle cx="5" cy="12" r="1" /><circle cx="12" cy="19" r="1" />
+        <line x1="12" y1="7" x2="12" y2="10" /><line x1="14" y1="12" x2="18" y2="12" /><line x1="6" y1="12" x2="10" y2="12" /><line x1="12" y1="14" x2="12" y2="18" />
+      </svg>
+    ),
+    title: 'Developer Matrix',
+    desc: 'A real-time network map of every validated node. See who\'s building what, across which stacks, and where the enterprise demand is flowing.',
+    visual: 'network',
+  },
+  {
+    icon: (
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="2" y="3" width="20" height="14" rx="2" /><line x1="8" y1="21" x2="16" y2="21" /><line x1="12" y1="17" x2="12" y2="21" />
+      </svg>
+    ),
+    title: 'Portfolio Applications',
+    desc: 'Live-feed portfolio showcases that demonstrate real deployed work — not theoretical projects. Enterprises see your code running in production.',
+    visual: 'portfolio',
+  },
+  {
+    icon: (
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M12 20V10" /><path d="M18 20V4" /><path d="M6 20v-4" />
+      </svg>
+    ),
+    title: '32-Node User Journey',
+    desc: 'A structured validation pipeline from profile creation to enterprise deployment. Each node is a checkpoint that proves capability, not credentials.',
+    visual: 'journey',
+  },
+];
+
+/* ─── 32-Node Journey Steps ─── */
+const JOURNEY_NODES = [
+  { num: '01', label: 'Profile Created', status: 'done' },
+  { num: '08', label: 'Stack Validated', status: 'done' },
+  { num: '16', label: 'Sprint Completed', status: 'active' },
+  { num: '24', label: 'Enterprise Matched', status: 'pending' },
+  { num: '32', label: 'Deployed to Production', status: 'pending' },
+];
+
 /* ════════════════════════════════════════════ */
 /*               MAIN PAGE                     */
 /* ════════════════════════════════════════════ */
@@ -63,11 +148,42 @@ export default function HomePage() {
   const formRef = useRef<HTMLFormElement>(null);
   const skillRef = useRef<HTMLInputElement>(null);
 
+  /* Terminal typing state */
+  const [termLine, setTermLine] = useState(0);
+  const [termChar, setTermChar] = useState(0);
+  const [termDone, setTermDone] = useState<string[]>([]);
+
   useEffect(() => {
     const onS = () => setNavSolid(window.scrollY > 40);
     window.addEventListener('scroll', onS);
     return () => window.removeEventListener('scroll', onS);
   }, []);
+
+  /* Terminal typing animation */
+  useEffect(() => {
+    if (termLine >= TERMINAL_LINES.length) {
+      const reset = setTimeout(() => {
+        setTermLine(0);
+        setTermChar(0);
+        setTermDone([]);
+      }, 3000);
+      return () => clearTimeout(reset);
+    }
+    const currentText = TERMINAL_LINES[termLine].text;
+    if (termChar < currentText.length) {
+      const speed = 25 + Math.random() * 30;
+      const t = setTimeout(() => setTermChar(c => c + 1), speed);
+      return () => clearTimeout(t);
+    } else {
+      const full = TERMINAL_LINES[termLine].prefix + currentText;
+      const t = setTimeout(() => {
+        setTermDone(prev => [...prev, full]);
+        setTermLine(l => l + 1);
+        setTermChar(0);
+      }, 600);
+      return () => clearTimeout(t);
+    }
+  }, [termLine, termChar]);
 
   const flash = useCallback((msg: string, ok: boolean) => { setToast({ msg, ok }); setTimeout(() => setToast(null), 4000); }, []);
 
@@ -139,7 +255,7 @@ export default function HomePage() {
   };
 
   return (<>
-    {/* Navbar */}
+    {/* ═══ Navbar ═══ */}
     <nav className={`nav${navSolid ? ' nav--solid' : ''}`}>
       <div className="nav-inner">
         <a href="#" className="nav-brand">
@@ -147,44 +263,67 @@ export default function HomePage() {
           <span>Matrix Digital</span>
         </a>
         <div className="nav-links hide-mobile">
-          <a href="#how">How It Works</a>
-          <a href="#why">Why Join</a>
-          <a href="#network">Network</a>
+          <a href="#archetypes">Archetypes</a>
+          <a href="#platform">Platform</a>
+          <a href="#standard">Standard</a>
         </div>
-        <a href="#apply" className="btn btn-primary btn-sm">Apply Now</a>
+        <a href="#apply" className="btn btn-primary btn-sm">Claim Your Node</a>
       </div>
     </nav>
 
-    {/* Hero */}
+    {/* ═══ 1. Terminal Hero ═══ */}
     <section className="hero">
       <div className="hero-bg" />
+      <div className="hero-grid-bg" />
       <div className="hero-inner">
         <div className="hero-content">
           <div className="pill">
             <span className="pill-dot" />
-            Developer-First Platform
+            Founding Architect Pipeline
           </div>
-          <h1>Where top developers<br />get <span className="text-accent">discovered.</span></h1>
-          <p className="hero-desc">Skip the resume black hole. Showcase your real work, pass a validation sprint, and get matched with enterprise projects — automatically.</p>
+          <h1>Plug Into the<br /><span className="text-accent">Matrix Digital</span> Pipeline.</h1>
+          <p className="hero-desc">
+            We don&apos;t hire developers. We deploy <strong>founding architects</strong> — engineers who build, ship, and own their stack inside enterprise-grade AI infrastructure.
+          </p>
           <div className="hero-ctas">
-            <a href="#apply" className="btn btn-primary btn-lg">
-              Get Started — It&apos;s Free
+            <a href="#archetypes" className="btn btn-primary btn-lg">
+              Claim Your Node
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
             </a>
+            <a href="#platform" className="btn btn-outline">Explore Platform</a>
           </div>
           <div className="hero-proof">
             <div className="avatars">
-              {['#3B82F6', '#8B5CF6', '#EC4899', '#F59E0B'].map((c, i) => (
+              {['#6366F1', '#0052FF', '#059669', '#F59E0B'].map((c, i) => (
                 <div key={i} className="avatar" style={{ background: c, zIndex: 4 - i }}>{String.fromCharCode(65 + i)}</div>
               ))}
             </div>
-            <p><strong>200+</strong> developers validated this month</p>
+            <p><strong>200+</strong> nodes deployed this quarter</p>
           </div>
         </div>
         <div className="hero-visual hide-mobile">
-          <div className="code-card">
-            <div className="code-dots"><span /><span /><span /></div>
-            <pre><code><span className="ck">const</span> <span className="cv">developer</span> = {'{'}{'\n'}  name: <span className="cs">&quot;You&quot;</span>,{'\n'}  stack: [<span className="cs">&quot;React&quot;</span>, <span className="cs">&quot;Node&quot;</span>, <span className="cs">&quot;Python&quot;</span>],{'\n'}  status: <span className="cs">&quot;Validated ✓&quot;</span>,{'\n'}  matches: <span className="cn">3</span>{'\n'}{'}'}</code></pre>
+          <div className="hero-terminal">
+            <div className="hero-terminal-bar">
+              <span /><span /><span />
+              <span className="hero-terminal-title">matrix_pipeline.sh</span>
+            </div>
+            <div className="hero-terminal-body">
+              {termDone.map((line, i) => (
+                <p key={i} className={`term-line term-${TERMINAL_LINES[i]?.color ?? 'green'}`}>{line}</p>
+              ))}
+              {termLine < TERMINAL_LINES.length && (
+                <p className={`term-line term-${TERMINAL_LINES[termLine].color}`}>
+                  {TERMINAL_LINES[termLine].prefix}
+                  {TERMINAL_LINES[termLine].text.slice(0, termChar)}
+                  <span className="term-cursor">▊</span>
+                </p>
+              )}
+              {termLine >= TERMINAL_LINES.length && (
+                <p className="term-line term-status">
+                  <span className="term-badge">ALL NODES ACTIVE</span>
+                </p>
+              )}
+            </div>
           </div>
         </div>
       </div>
@@ -200,77 +339,124 @@ export default function HomePage() {
       </div>
     </section>
 
-    {/* How It Works */}
-    <section className="section" id="how">
+    {/* ═══ 2. Archetype Bento Grid ═══ */}
+    <section className="section" id="archetypes">
       <div className="container">
-        <p className="section-tag">How It Works</p>
-        <h2>Three steps to your<br /><span className="text-accent">next project.</span></h2>
-        <p className="section-desc">No recruiter calls. No resume parsing. Just pure signal.</p>
-        <div className="steps-grid">
-          {[
-            { num: '01', title: 'Submit your profile', desc: 'Add your stack, links, and a short bio. Takes about 2 minutes.' },
-            { num: '02', title: 'Complete a sprint', desc: 'A quick, AI-powered assessment validates your skills in ~15 minutes.' },
-            { num: '03', title: 'Get matched', desc: 'Your validated profile is routed to active enterprise projects automatically.' },
-          ].map((s) => (
-            <div key={s.num} className="step-card">
-              <span className="step-num">{s.num}</span>
-              <h3>{s.title}</h3>
-              <p>{s.desc}</p>
+        <p className="section-tag">Your Archetype</p>
+        <h2>Four paths. One <span className="text-accent">ecosystem.</span></h2>
+        <p className="section-desc">Every developer fits an archetype. Each one plugs into a different layer of the Matrix Digital infrastructure. Find yours.</p>
+        <div className="bento-grid">
+          {ARCHETYPES.map((a, i) => (
+            <div key={i} className={`bento-card bento-card--${i}`}>
+              <div className="bento-icon" style={{ background: a.gradient }}>{a.icon}</div>
+              <h3>{a.title}</h3>
+              <p>{a.desc}</p>
+              <span className="bento-tag">{a.tag}</span>
+              <a href="#apply" className="bento-cta">
+                Claim this node
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
+              </a>
             </div>
           ))}
         </div>
       </div>
     </section>
 
-    {/* Why Join */}
-    <section className="section section--alt" id="why">
+    {/* ═══ 3. Platform Feature Highlights ═══ */}
+    <section className="section section--alt" id="platform">
       <div className="container">
-        <div className="split">
-          <div className="split-text">
-            <p className="section-tag">Why Join</p>
-            <h2>Built for developers<br />who <span className="text-accent">ship.</span></h2>
-            <p className="section-desc" style={{ textAlign: 'left', margin: 0 }}>We eliminate busywork so you can focus on building things that work.</p>
-            <ul className="check-list">
-              <li>
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0052FF" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
-                <div><strong>No resume parsing</strong><span>Your repos and live projects do the talking.</span></div>
-              </li>
-              <li>
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0052FF" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
-                <div><strong>Guaranteed matching</strong><span>Validated developers are routed to active projects instantly.</span></div>
-              </li>
-              <li>
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0052FF" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
-                <div><strong>Own your architecture</strong><span>Showcase the frameworks and systems you&apos;ve actually built.</span></div>
-              </li>
-            </ul>
-          </div>
-          <div className="split-visual hide-mobile">
-            <div className="terminal">
-              <div className="terminal-bar"><span /><span /><span /></div>
-              <div className="terminal-body">
-                <p><span className="t-green">$</span> matrix validate --profile</p>
-                <p className="t-dim">Scanning repos ............. <span className="t-green">✓</span></p>
-                <p className="t-dim">Analyzing stack ............ <span className="t-green">✓</span></p>
-                <p className="t-dim">Running sprint ............. <span className="t-green">✓</span></p>
-                <p className="t-dim">Routing to pipelines ....... <span className="t-green">✓</span></p>
-                <p>&nbsp;</p>
-                <p className="t-status"><span>VALIDATED</span></p>
-                <p className="t-dim t-small">Profile active · 3 project matches</p>
-              </div>
+        <p className="section-tag">Platform</p>
+        <h2>Infrastructure that<br /><span className="text-accent">validates builders.</span></h2>
+        <p className="section-desc">Not another portfolio site. A living system that routes validated developers to enterprise demand in real time.</p>
+
+        {PLATFORM_FEATURES.map((feat, i) => (
+          <div key={i} className={`feature-row${i % 2 === 1 ? ' feature-row--reverse' : ''}`}>
+            <div className="feature-text">
+              <div className="feature-icon-circle">{feat.icon}</div>
+              <h3>{feat.title}</h3>
+              <p>{feat.desc}</p>
+            </div>
+            <div className="feature-visual">
+              {feat.visual === 'network' && (
+                <div className="viz-network">
+                  <div className="viz-node viz-node--center"><span>YOU</span></div>
+                  {['React', 'Python', 'AI/ML', 'DevOps', 'Next.js'].map((label, j) => (
+                    <div key={j} className={`viz-node viz-node--${j}`}><span>{label}</span></div>
+                  ))}
+                  <svg className="viz-lines" viewBox="0 0 300 200">
+                    <line x1="150" y1="100" x2="60" y2="40" stroke="var(--accent-b)" strokeWidth="1.5" />
+                    <line x1="150" y1="100" x2="240" y2="40" stroke="var(--accent-b)" strokeWidth="1.5" />
+                    <line x1="150" y1="100" x2="40" y2="160" stroke="var(--accent-b)" strokeWidth="1.5" />
+                    <line x1="150" y1="100" x2="260" y2="160" stroke="var(--accent-b)" strokeWidth="1.5" />
+                    <line x1="150" y1="100" x2="150" y2="20" stroke="var(--accent-b)" strokeWidth="1.5" />
+                  </svg>
+                </div>
+              )}
+              {feat.visual === 'portfolio' && (
+                <div className="viz-portfolio">
+                  {['AI Chatbot Dashboard', 'E-Commerce Platform', 'Real-Time Analytics'].map((name, j) => (
+                    <div key={j} className="viz-project-card">
+                      <div className="viz-project-dot" style={{ background: ['#6366F1', '#059669', '#F59E0B'][j] }} />
+                      <div>
+                        <strong>{name}</strong>
+                        <span>Live · Deployed</span>
+                      </div>
+                      <span className="viz-live-badge">● Live</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+              {feat.visual === 'journey' && (
+                <div className="viz-journey">
+                  {JOURNEY_NODES.map((node, j) => (
+                    <div key={j} className={`viz-journey-node viz-journey--${node.status}`}>
+                      <div className="viz-journey-num">{node.num}</div>
+                      <div className="viz-journey-label">{node.label}</div>
+                      {j < JOURNEY_NODES.length - 1 && <div className="viz-journey-line" />}
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
-        </div>
+        ))}
       </div>
     </section>
 
-    {/* Network CTA */}
-    <section className="section section--center" id="network">
-      <div className="container" style={{ maxWidth: 640 }}>
-        <p className="section-tag">Network</p>
-        <h2>Join <span className="text-accent">200+</span> validated developers.</h2>
-        <p className="section-desc">Access enterprise projects, connect with builders, and grow your career on your terms.</p>
-        <a href="#apply" className="btn btn-outline btn-lg">Create Your Profile</a>
+    {/* ═══ 4. The Matrix Standard ═══ */}
+    <section className="section section--standard" id="standard">
+      <div className="container">
+        <div className="standard-inner">
+          <div className="standard-badge">The Matrix Standard</div>
+          <h2>No Spoon-Feeding.</h2>
+          <p className="standard-lead">
+            We provide the stack, the mentorship, and the enterprise pipeline.<br />
+            But we require <strong>Neeyat</strong> — intention, fire, and follow-through.
+          </p>
+          <div className="standard-grid">
+            <div className="standard-card">
+              <div className="standard-card-icon">🔥</div>
+              <h4>We Give You</h4>
+              <ul>
+                <li>Production-grade infrastructure</li>
+                <li>Real enterprise project routing</li>
+                <li>AI-powered skill validation</li>
+                <li>Stack mentorship & architecture reviews</li>
+              </ul>
+            </div>
+            <div className="standard-card standard-card--dark">
+              <div className="standard-card-icon">⚡</div>
+              <h4>We Expect From You</h4>
+              <ul>
+                <li>Self-driven learning & shipping</li>
+                <li>Ownership of your architecture</li>
+                <li>Commitment to the 32-node journey</li>
+                <li>No hand-holding — just building</li>
+              </ul>
+            </div>
+          </div>
+          <p className="standard-quote">&ldquo;The ones who ship, lead. The ones who wait, watch.&rdquo;</p>
+        </div>
       </div>
     </section>
 
@@ -426,17 +612,49 @@ export default function HomePage() {
       </div>
     </section>
 
-    {/* Footer */}
+    {/* ═══ 5. Tech Architecture Footer ═══ */}
     <footer className="footer">
       <div className="footer-inner">
-        <div className="footer-brand">
-          <img src="/Matrix_logo.jpg" alt="Matrix Digital" className="nav-logo" />
-          <span>Matrix Digital</span>
+        <div className="footer-brand-col">
+          <div className="footer-brand">
+            <img src="/Matrix_logo.jpg" alt="Matrix Digital" className="nav-logo" />
+            <span>Matrix Digital</span>
+          </div>
+          <p className="footer-tagline">Building the developer infrastructure for enterprise AI.</p>
         </div>
         <div className="footer-links">
-          <div><h4>Platform</h4><a href="#apply">Developer Sign Up</a><a href="#how">How It Works</a></div>
-          <div><h4>Network</h4><a href="#network">Status</a><a href="#">Support</a></div>
-          <div><h4>Company</h4><a href="#">About</a><a href="#">Contact</a></div>
+          <div>
+            <h4>Platform</h4>
+            <a href="#apply">Developer Sign Up</a>
+            <a href="#archetypes">Archetypes</a>
+            <a href="#platform">Features</a>
+          </div>
+          <div>
+            <h4>Standard</h4>
+            <a href="#standard">The Matrix Standard</a>
+            <a href="#">Support</a>
+          </div>
+          <div>
+            <h4>Company</h4>
+            <a href="#">About</a>
+            <a href="#">Contact</a>
+          </div>
+        </div>
+      </div>
+      <div className="footer-tech">
+        <p className="footer-tech-label">Built With</p>
+        <div className="footer-tech-stack">
+          {[
+            { name: 'Next.js 15', icon: '▲' },
+            { name: 'Neon DB', icon: '⚡' },
+            { name: 'Prisma ORM', icon: '◆' },
+            { name: 'Vercel Edge', icon: '●' },
+          ].map((t) => (
+            <span key={t.name} className="footer-tech-item">
+              <span className="footer-tech-icon">{t.icon}</span>
+              {t.name}
+            </span>
+          ))}
         </div>
       </div>
       <div className="footer-bottom">
