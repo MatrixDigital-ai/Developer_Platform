@@ -276,10 +276,29 @@ export default function HomePage() {
 
     {/* Application Form */}
     <section className="section section--form" id="apply">
-      <div className="container" style={{ maxWidth: 580 }}>
-        <p className="section-tag">Apply</p>
-        <h2>Create your <span className="text-accent">profile.</span></h2>
-        <p className="section-desc">Takes about 2 minutes. All you need is your info and links.</p>
+      <div className="container" style={{ maxWidth: 620 }}>
+        <div className="form-header">
+          <div className="form-header-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4-4v2" /><circle cx="12" cy="7" r="4" /></svg>
+          </div>
+          <p className="section-tag">Apply</p>
+          <h2>Create your <span className="text-accent">developer profile.</span></h2>
+          <p className="section-desc">Join 200+ validated developers. Takes ~2 minutes — no credit card, no commitments.</p>
+          <div className="form-trust-row">
+            <span className="form-trust-item">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--green)" strokeWidth="2.5"><polyline points="20 6 9 17 4 12" /></svg>
+              Free forever
+            </span>
+            <span className="form-trust-item">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--green)" strokeWidth="2.5"><polyline points="20 6 9 17 4 12" /></svg>
+              No spam
+            </span>
+            <span className="form-trust-item">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--green)" strokeWidth="2.5"><polyline points="20 6 9 17 4 12" /></svg>
+              Data encrypted
+            </span>
+          </div>
+        </div>
 
         {/* Stepper */}
         <div className="stepper">
@@ -394,12 +413,16 @@ export default function HomePage() {
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
               </button>
             ) : (
-              <button type="submit" className="btn btn-primary" disabled={isSubmitting}>
-                {isSubmitting ? (<><span className="spinner" /> Submitting...</>) : (<>Submit Profile <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" /></svg></>)}
+              <button type="submit" className="btn btn-primary btn-lg" disabled={isSubmitting} style={{ width: '100%' }}>
+                {isSubmitting ? (<><span className="spinner" /> Submitting...</>) : (<>Submit Your Profile <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" /></svg></>)}
               </button>
             )}
           </div>
         </form>
+        <p className="form-secure-note">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2" /><path d="M7 11V7a5 5 0 0110 0v4" /></svg>
+          Your information is encrypted and never shared without your consent.
+        </p>
       </div>
     </section>
 
