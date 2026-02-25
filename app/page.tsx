@@ -4,7 +4,7 @@ import { useState, useRef, useEffect, useCallback, FormEvent, KeyboardEvent } fr
 
 /* ─── Assessment Modal ─── */
 function AssessmentModal({ onClose }: { onClose: () => void }) {
-  const INTERVIEW_URL = 'https://talent.flowmingo.ai/interview/5a733f53-19b0-437b-9960-d96e27a9d0cb/?utm_source=chatgpt.com';
+  const INTERVIEW_URL = 'https://talent.flowmingo.ai/interview/34be861a-62b1-4236-9c09-f5be17d3f8ab/?utm_source=chatgpt.com';
 
   return (
     <div className="modal-backdrop" onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}>
